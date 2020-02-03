@@ -1,0 +1,108 @@
+openapi: 3.0.0
+
+info:
+  description: Alpha 0.1.1 version of withcharts data processing and chart creation API
+  version: "0.1.1"
+  title: withcharts API
+  contact:
+    email: dev@withcharts.com
+
+servers:
+  - description: Development server
+    url: http://api.withcharts.com/v0.1.1
+
+tags:
+  - name: Datasets
+    description: Datasets are outcomes of withcharts data processing
+
+paths:
+
+  /datasets:
+
+    # post:
+      # tags:
+      #   - Datasets
+      # summary: Creates a new Dataset
+      # description: This processes data provided by the API user and creates a new *Dataset*. The API user uploads a data *Source file*. The POST request returns a *Dataset ID*.
+      # x-swagger-router-controller: controllers.datasets_controller
+      # operationId: post_dataset_with_file
+      # requestBody:
+      #   $ref: '#/components/requestBodies/dataset_post_body'
+      # responses:
+      #   '201':
+      #     description: Succesful *Dataset* creation
+      #     content:
+      #       application/json:
+      #         schema:
+      #           $ref: '#/components/schemas/dataset_id_post_response'
+
+    get:
+      tags:
+        - Datasets
+      summary: Retrieve a Dataset by its ID
+      description: This retrieves an existing *Dataset*. The API user indicates a *Dataset ID*. The GET request returns a *Dataset object*.
+      x-swagger-router-controller: controllers.datasets_controller
+      operationId: get_dataset_by_id
+      parameters:
+        - name: requested_dataset_id
+          in: query
+          description: The API user indicates a Dataset ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Succesful *Dataset* retrieval
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dataset'
+
+
+components:
+
+  schemas:
+
+    dataset:
+      type: object
+      properties:
+        dataset_id:
+          type: string
+          example: '40655045bfy'
+        dataset_filename:
+          type: string
+          example: 'KPIs Sheet.xlsx'
+        dataset_rows:
+          type: integer
+          example: 1500
+        dataset_columns:
+          type: integer
+          example: 8
+        dataset_headers:
+          type: array
+          items:
+            type: string
+            example: ['Revenue','Sign-Ups','Active Users']
+
+
+    # dataset_id_post_response:
+    #   type: object
+    #   properties:
+    #     dataset_id:
+    #       type: string
+    #       example: '40655045bfy'
+
+ 
+  # requestBodies:
+
+  #   dataset_post_body:
+  #     description: The API user uploads a data *Source file*.
+  #     required: true
+  #     content:
+  #       multipart/form-data:
+  #         schema:
+  #           type: object
+  #           properties:
+  #             source_file:
+  #               type: string
+  #               format: binary
