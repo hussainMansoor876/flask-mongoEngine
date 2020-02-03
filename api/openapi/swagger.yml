@@ -8,28 +8,23 @@ consumes:
 produces:
   - application/json
 
-basePath: /api
 
 # Paths supported by the server application
 paths:
-  /people:
+  /datasets:
     get:
-      operationId: people.read_all
+      operationId: get_dataset_by_id
       tags:
-        - People
-      summary: Read the entire list of people
-      description: Read the list of people
+        - Datasets
+      summary: Retrieve a Dataset by its ID
+      description: This retrieves an existing *Dataset*. The API user indicates a *Dataset ID*. The GET request returns a *Dataset object*.
+      x-swagger-router-controller: controllers.datasets_controller
       parameters:
-        - name: length
+        - name: requested_dataset_id
           in: query
-          type: integer
-          description: Number of people to get from people
-          required: false
-        - name: offset
-          in: query
-          type: integer
-          description: Offset from beginning of list where to start gathering people
-          required: false
+          type: string
+          description: The API user indicates a Dataset ID
+          required: true
       responses:
         200:
           description: Successfully read people list operation
@@ -54,139 +49,91 @@ paths:
                   type: string
                   example: ['Revenue','Sign-Ups','Active Users']
 
-    post:
-      operationId: people.create
-      tags:
-        - people
-      summary: Create a person and add it to the people list
-      description: Create a new person in the people list
-      parameters:
-        - name: person
-          in: body
-          description: Person to create
-          required: True
-          schema:
-            type: object
-            properties:
-              fname:
-                type: string
-                description: First name of person to create
-              lname:
-                type: string
-                description: Last name of person to create
-      responses:
-        201:
-          description: Successfully created person in list
-
-  /people/{lname}:
-    get:
-      operationId: people.read_one
-      tags:
-        - people
-      summary: Read one person from the people list
-      description: Read one person from the people list
-      parameters:
-        - name: lname
-          in: path
-          description: Last name of the person to get from the list
-          type: string
-          required: True
-      responses:
-        200:
-          description: Successfully read person from people list operation
-          schema:
-            properties:
-              fname:
-                type: string
-              lname:
-                type: string
-              timestamp:
-                type: string
-
-    put:
-      operationId: people.update
-      tags:
-        - people
-      summary: Update a person in the people list
-      description: Update a person in the people list
-      parameters:
-        - name: lname
-          in: path
-          description: Last name of the person to update in the list
-          type: string
-          required: True
-        - name: person
-          in: body
-          schema:
-            type: object
-            properties:
-              fname:
-                type: string
-              lname:
-                type: string
-      responses:
-        200:
-          description: Successfully updated person in people list
-
-    delete:
-      operationId: people.delete
-      tags:
-        - people
-      summary: Delete a person from the people list
-      description: Delete a person
-      parameters:
-        - name: lname
-          in: path
-          type: string
-          required: True
-      responses:
-        200:
-          description: Successfully deleted a person from people list
-
-components:
-
-  schemas:
-
-    dataset:
-      type: object
-      properties:
-        dataset_id:
-          type: string
-          example: '40655045bfy'
-        dataset_filename:
-          type: string
-          example: 'KPIs Sheet.xlsx'
-        dataset_rows:
-          type: integer
-          example: 1500
-        dataset_columns:
-          type: integer
-          example: 8
-        dataset_headers:
-          type: array
-          items:
-            type: string
-            example: ['Revenue','Sign-Ups','Active Users']
-
-
-    # dataset_id_post_response:
-    #   type: object
-    #   properties:
-    #     dataset_id:
-    #       type: string
-    #       example: '40655045bfy'
-
- 
-  # requestBodies:
-
-  #   dataset_post_body:
-  #     description: The API user uploads a data *Source file*.
-  #     required: true
-  #     content:
-  #       multipart/form-data:
+  #   post:
+  #     operationId: people.create
+  #     tags:
+  #       - people
+  #     summary: Create a person and add it to the people list
+  #     description: Create a new person in the people list
+  #     parameters:
+  #       - name: person
+  #         in: body
+  #         description: Person to create
+  #         required: True
   #         schema:
   #           type: object
   #           properties:
-  #             source_file:
+  #             fname:
   #               type: string
-  #               format: binary
+  #               description: First name of person to create
+  #             lname:
+  #               type: string
+  #               description: Last name of person to create
+  #     responses:
+  #       201:
+  #         description: Successfully created person in list
+
+  # /people/{lname}:
+  #   get:
+  #     operationId: people.read_one
+  #     tags:
+  #       - people
+  #     summary: Read one person from the people list
+  #     description: Read one person from the people list
+  #     parameters:
+  #       - name: lname
+  #         in: path
+  #         description: Last name of the person to get from the list
+  #         type: string
+  #         required: True
+  #     responses:
+  #       200:
+  #         description: Successfully read person from people list operation
+  #         schema:
+  #           properties:
+  #             fname:
+  #               type: string
+  #             lname:
+  #               type: string
+  #             timestamp:
+  #               type: string
+
+  #   put:
+  #     operationId: people.update
+  #     tags:
+  #       - people
+  #     summary: Update a person in the people list
+  #     description: Update a person in the people list
+  #     parameters:
+  #       - name: lname
+  #         in: path
+  #         description: Last name of the person to update in the list
+  #         type: string
+  #         required: True
+  #       - name: person
+  #         in: body
+  #         schema:
+  #           type: object
+  #           properties:
+  #             fname:
+  #               type: string
+  #             lname:
+  #               type: string
+  #     responses:
+  #       200:
+  #         description: Successfully updated person in people list
+
+  #   delete:
+  #     operationId: people.delete
+  #     tags:
+  #       - people
+  #     summary: Delete a person from the people list
+  #     description: Delete a person
+  #     parameters:
+  #       - name: lname
+  #         in: path
+  #         type: string
+  #         required: True
+  #     responses:
+  #       200:
+  #         description: Successfully deleted a person from people list

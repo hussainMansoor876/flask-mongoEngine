@@ -54,10 +54,11 @@ def get_dataset_by_id(requested_dataset_id):  # noqa: E501
 
     :rtype: Dataset
     """
+    print(requested_dataset_id)
     return {
         "dataset_id": "40655045bfy",
         "dataset_filename": "KPIs Sheet.xlsx",
         "dataset_rows": 1500,
         "dataset_columns": 8,
-        "dataset_headers": ['Revenue','Sign-Ups','Active Users']
+        "dataset_headers": ['Revenue','Sign-Ups','Active Users', 'Mansoor']
     }
