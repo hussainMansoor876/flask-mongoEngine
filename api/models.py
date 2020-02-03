@@ -16,4 +16,4 @@ class Dataset_mongo(db.Document):
     dataset_filename = db.StringField(required=True)
     dataset_rows = db.IntField(required=True)
     dataset_columns = db.IntField(required=True)
-    dataset_headers = db.ListField(StringField(), required=True)
+    dataset_headers = db.ListField(db.StringField(), required=True)

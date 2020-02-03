@@ -11,15 +11,22 @@
 
 
 # Definition of the Dataset_mongo class
-import os
-import sys
-currentdir = os.path.dirname(os.path.realpath(__file__))
-parentdir = os.path.dirname(currentdir)
-sys.path.append(parentdir)
+
+import datetime
+
+from flask_mongoengine import MongoEngine
+
+db = MongoEngine()
 
 
-# class Dataset_mongo(Document):
-#     dataset_filename = StringField(required=True)
-#     dataset_rows = IntField(required=True)
-#     dataset_columns = IntField(required=True)
-#     dataset_headers = ListField(StringField(), required=True)
+# class Todo(db.Document):
+#     title = db.StringField(max_length=60)
+#     text = db.StringField()
+#     done = db.BooleanField(default=False)
+#     pub_date = db.DateTimeField(default=datetime.datetime.now)
+
+class Dataset_mongo(db.Document):
+    dataset_filename = db.StringField(required=True)
+    dataset_rows = db.IntField(required=True)
+    dataset_columns = db.IntField(required=True)
+    dataset_headers = db.ListField(db.StringField(), required=True)
