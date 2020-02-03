@@ -46,3 +46,7 @@ class Dataset_core:
         # Capture of the dataframe's list of column headers
 
         self.headers = list(self.df.columns.values)
+
+
+obj1 = Dataset_core('abc.txt')
+print(obj1)

@@ -18,6 +18,7 @@ app.config['MONGODB_SETTINGS'] = {
 # from models import db
 db = MongoEngine()
 db.init_app(app)
+import core.basic_algorithm.D
 
 
 class Dataset_mongo(db.Document):
@@ -30,25 +31,6 @@ class Dataset_mongo(db.Document):
 def get_timestamp():
     return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
 
-
-# Data to serve with our API
-PEOPLE = {
-    "Farrell": {
-        "fname": "Doug",
-        "lname": "Farrell",
-        "timestamp": get_timestamp(),
-    },
-    "Brockman": {
-        "fname": "Kent",
-        "lname": "Brockman",
-        "timestamp": get_timestamp(),
-    },
-    "Easter": {
-        "fname": "Bunny",
-        "lname": "Easter",
-        "timestamp": get_timestamp(),
-    },
-}
 
 
 def post_dataset_with_file(source_file):  # noqa: E501
