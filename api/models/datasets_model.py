@@ -11,9 +11,15 @@
 
 
 # Definition of the Dataset_mongo class
+import os
+import sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
 
-class Dataset_mongo(Document):
-    dataset_filename = StringField(required=True)
-    dataset_rows = IntField(required=True)
-    dataset_columns = IntField(required=True)
-    dataset_headers = ListField(StringField(), required=True)
+
+# class Dataset_mongo(Document):
+#     dataset_filename = StringField(required=True)
+#     dataset_rows = IntField(required=True)
+#     dataset_columns = IntField(required=True)
+#     dataset_headers = ListField(StringField(), required=True)
