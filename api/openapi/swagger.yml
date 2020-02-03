@@ -49,29 +49,50 @@ paths:
                   type: string
                   example: ['Revenue','Sign-Ups','Active Users']
 
-  #   post:
-  #     operationId: people.create
-  #     tags:
-  #       - people
-  #     summary: Create a person and add it to the people list
-  #     description: Create a new person in the people list
-  #     parameters:
-  #       - name: person
-  #         in: body
-  #         description: Person to create
-  #         required: True
-  #         schema:
-  #           type: object
-  #           properties:
-  #             fname:
-  #               type: string
-  #               description: First name of person to create
-  #             lname:
-  #               type: string
-  #               description: Last name of person to create
-  #     responses:
-  #       201:
-  #         description: Successfully created person in list
+    post:
+      tags:
+        - Datasets
+      summary: Creates a new Dataset
+      description: This processes data provided by the API user and creates a new *Dataset*. The API user uploads a data *Source file*. The POST request returns a *Dataset ID*.
+      x-swagger-router-controller: controllers.datasets_controller
+      operationId: post_dataset_with_file
+      parameters:
+        - name: person
+          in: body
+          description: Person to create
+          required: True
+          schema:
+            type: object
+            properties:
+              fname:
+                type: string
+                description: First name of person to create
+              lname:
+                type: string
+                description: Last name of person to create
+      responses:
+        201:
+          description: Succesful *Dataset* creation
+          schema:
+            type: object
+            properties:
+              dataset_id:
+                type: string
+                example: '40655045bfy'
+              dataset_filename:
+                type: string
+                example: 'KPIs Sheet.xlsx'
+              dataset_rows:
+                type: integer
+                example: 1500
+              dataset_columns:
+                type: integer
+                example: 8
+              dataset_headers:
+                type: array
+                items:
+                  type: string
+                  example: ['Revenue','Sign-Ups','Active Users']
 
   # /people/{lname}:
   #   get:

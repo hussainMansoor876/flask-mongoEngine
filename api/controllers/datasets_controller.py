@@ -18,7 +18,6 @@ app.config['MONGODB_SETTINGS'] = {
 # from models import db
 db = MongoEngine()
 db.init_app(app)
-import core.basic_algorithm.D
 
 
 class Dataset_mongo(db.Document):

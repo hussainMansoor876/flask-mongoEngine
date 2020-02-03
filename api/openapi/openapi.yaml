@@ -19,22 +19,22 @@ paths:
 
   /datasets:
 
-    # post:
-      # tags:
-      #   - Datasets
-      # summary: Creates a new Dataset
-      # description: This processes data provided by the API user and creates a new *Dataset*. The API user uploads a data *Source file*. The POST request returns a *Dataset ID*.
-      # x-swagger-router-controller: controllers.datasets_controller
-      # operationId: post_dataset_with_file
-      # requestBody:
-      #   $ref: '#/components/requestBodies/dataset_post_body'
-      # responses:
-      #   '201':
-      #     description: Succesful *Dataset* creation
-      #     content:
-      #       application/json:
-      #         schema:
-      #           $ref: '#/components/schemas/dataset_id_post_response'
+    post:
+      tags:
+        - Datasets
+      summary: Creates a new Dataset
+      description: This processes data provided by the API user and creates a new *Dataset*. The API user uploads a data *Source file*. The POST request returns a *Dataset ID*.
+      x-swagger-router-controller: controllers.datasets_controller
+      operationId: post_dataset_with_file
+      requestBody:
+        $ref: '#/components/requestBodies/dataset_post_body'
+      responses:
+        '201':
+          description: Succesful *Dataset* creation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/dataset_id_post_response'
 
     get:
       tags:
