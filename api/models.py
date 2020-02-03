@@ -3,6 +3,8 @@ import datetime
 from flask_mongoengine import MongoEngine
 
 db = MongoEngine()
+from app import app
+db.init_app(app.app)
 
 class Todo(db.Document):
     title = db.StringField(max_length=60)

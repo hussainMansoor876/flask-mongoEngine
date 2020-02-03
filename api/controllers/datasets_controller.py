@@ -9,6 +9,7 @@ from flask import make_response, abort
 # parent_dir = os.path.dirname(current_dir)
 # sys.path.insert(0, parent_dir)
 # from api.models.datasets_model import Dataset_mongo
+from models import datasets_model
 
 def get_timestamp():
     return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
