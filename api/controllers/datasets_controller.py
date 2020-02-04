@@ -22,6 +22,7 @@ UPLOAD_FOLDER = './storage/'
 ALLOWED_EXTENSIONS = {'csv', 'xls', 'xlsx'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
+import pandas as pd
 
 db = MongoEngine()
 db.init_app(app)
@@ -50,13 +51,26 @@ def post_dataset_with_file(source_file):  # noqa: E501
     :rtype: DatasetIdPostResponse
     """
     filename = secure_filename(source_file.filename)
-    if allowed_file(filename):
-        source_file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-        return {
-            "dataset_id": "mansoor",
-        }
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'],filename)
+    if filename.lower().endswith(('.xls', '.xlsx')): # checking if file's extension is .xls or .xlsx
+        source_file.save(filepath)
+        df = pd.read_excel(filepath, sheet_name=0, header=0) # reading the Excel input file into a pandas dataframe
+    elif filename.lower().endswith(('.csv')): # checking if file's extension is .csv
+        source_file.save(filepath)
+        df = pd.read_csv(filepath, header=0)
+    
+    rows = len(df.index) # counting rows
+    columns = len(df.columns) # counting columns
+
+        # Capture of the dataframe's list of column headers
+
+    headers = list(df.columns.values)
+
+    result = Dataset_mongo(dataset_filename=filename, dataset_rows=rows, dataset_columns=columns, dataset_headers=headers).save()
+
+    print('rows', result.id)
     return {
-            "dataset_id": "Not found",
+            "dataset_id": str(result.id),
         }
 
 
