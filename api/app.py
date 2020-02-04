@@ -12,11 +12,11 @@
 
 from flask import Flask, jsonify
 import connexion
-from flask_mongoengine import MongoEngine
 import datetime
 # from models.datasets_model import Dataset_mongo
 app = connexion.App(__name__, specification_dir='openapi/')
-db = MongoEngine()
+UPLOAD_FOLDER = './uploads'
+app.app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
 
 
 # Create the application instance

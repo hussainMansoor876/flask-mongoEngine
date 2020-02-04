@@ -27,11 +27,6 @@ class Dataset_mongo(db.Document):
     dataset_headers = db.ListField(db.StringField(), required=True)
 
 
-def get_timestamp():
-    return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
-
-
-
 def post_dataset_with_file(source_file):  # noqa: E501
     """Creates a new Dataset
 
@@ -42,7 +37,17 @@ def post_dataset_with_file(source_file):  # noqa: E501
 
     :rtype: DatasetIdPostResponse
     """
-    return [PEOPLE[key] for key in sorted(PEOPLE.keys())]
+    print(source_file.filename)
+    # return {
+    #     "dataset_id": "mansoor",
+    # }
+    return {
+        "dataset_id": "40655045bfy",
+        "dataset_filename": "KPIs Sheet.xlsx",
+        "dataset_rows": 1500,
+        "dataset_columns": 8,
+        "dataset_headers": ['Revenue', 'Sign-Ups', 'Active Users', 'Mansoor']
+    }
 
 
 def get_dataset_by_id(requested_dataset_id):  # noqa: E501
@@ -55,10 +60,7 @@ def get_dataset_by_id(requested_dataset_id):  # noqa: E501
 
     :rtype: Dataset
     """
-    result = Dataset_mongo.objects(id="5e37e07428afb4ab335976e5")[0]
-    for i in result:
-        print(i)
-    print(requested_dataset_id)
+    result = Dataset_mongo.objects(id=requested_dataset_id)[0]
     return result
     # return {
     #     "dataset_id": "40655045bfy",
@@ -67,3 +69,32 @@ def get_dataset_by_id(requested_dataset_id):  # noqa: E501
     #     "dataset_columns": 8,
     #     "dataset_headers": ['Revenue', 'Sign-Ups', 'Active Users', 'Mansoor']
     # }
+
+def create(person):
+    """
+    This function creates a new person in the people structure
+    based on the passed in person data
+
+    :param person:  person to create in people structure
+    :return:        201 on success, 406 on person exists
+    """
+    lname = person.get("lname", None)
+    fname = person.get("fname", None)
+
+    # Does the person exist already?
+    if lname not in PEOPLE and lname is not None:
+        PEOPLE[lname] = {
+            "lname": lname,
+            "fname": fname,
+            "timestamp": get_timestamp(),
+        }
+        return make_response(
+            "{lname} successfully created".format(lname=lname), 201
+        )
+
+    # Otherwise, they exist, that's an error
+    else:
+        abort(
+            406,
+            "Person with last name {lname} already exists".format(lname=lname),
+        )

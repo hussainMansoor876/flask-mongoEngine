@@ -19,22 +19,22 @@ paths:
 
   /datasets:
 
-    post:
-      tags:
-        - Datasets
-      summary: Creates a new Dataset
-      description: This processes data provided by the API user and creates a new *Dataset*. The API user uploads a data *Source file*. The POST request returns a *Dataset ID*.
-      x-swagger-router-controller: controllers.datasets_controller
-      operationId: post_dataset_with_file
-      requestBody:
-        $ref: '#/components/requestBodies/dataset_post_body'
-      responses:
-        '201':
-          description: Succesful *Dataset* creation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/dataset_id_post_response'
+    # post:
+    #   tags:
+    #     - Datasets
+    #   summary: Creates a new Dataset
+    #   description: This processes data provided by the API user and creates a new *Dataset*. The API user uploads a data *Source file*. The POST request returns a *Dataset ID*.
+    #   x-swagger-router-controller: controllers.datasets_controller
+    #   operationId: post_dataset_with_file
+    #   requestBody:
+    #     $ref: '#/components/requestBodies/dataset_post_body'
+    #   responses:
+    #     '201':
+    #       description: Succesful *Dataset* creation
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/dataset_id_post_response'
 
     get:
       tags:
@@ -56,25 +56,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  dataset_id:
-                    type: string
-                    example: '40655045bfy'
-                  dataset_filename:
-                    type: string
-                    example: 'KPIs Sheet.xlsx'
-                  dataset_rows:
-                    type: integer
-                    example: 1500
-                  dataset_columns:
-                    type: integer
-                    example: 8
-                  dataset_headers:
-                    type: array
-                    items:
-                      type: string
-                      example: ['Revenue','Sign-Ups','Active Users']
+                $ref: '#/components/schemas/dataset'
 
 
 components:
@@ -103,24 +85,24 @@ components:
             example: ['Revenue','Sign-Ups','Active Users']
 
 
-    # dataset_id_post_response:
-    #   type: object
-    #   properties:
-    #     dataset_id:
-    #       type: string
-    #       example: '40655045bfy'
+    dataset_id_post_response:
+      type: object
+      properties:
+        dataset_id:
+          type: string
+          example: '40655045bfy'
 
  
-  # requestBodies:
+  requestBodies:
 
-  #   dataset_post_body:
-  #     description: The API user uploads a data *Source file*.
-  #     required: true
-  #     content:
-  #       multipart/form-data:
-  #         schema:
-  #           type: object
-  #           properties:
-  #             source_file:
-  #               type: string
-  #               format: binary
+    dataset_post_body:
+      description: The API user uploads a data *Source file*.
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              source_file:
+                type: string
+                format: binary
