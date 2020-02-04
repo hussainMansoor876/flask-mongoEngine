@@ -1,30 +1,9 @@
-# import connexion
-
-
-# def main():
-#     app = connexion.App(__name__, specification_dir='openapi/')
-#     app.add_api('openapi.yaml')
-#     app.run(port=8080)
-
-
-# if __name__ == '__main__':
-#     main()
-
 from flask import Flask, jsonify
 import connexion
 from connexion.resolver import RestyResolver
 from flask_mongoengine import MongoEngine
-import datetime
-# from models.datasets_model import Dataset_mongo
 app = connexion.App(__name__, specification_dir='openapi/')
-UPLOAD_FOLDER = 'storage/'
-ALLOWED_EXTENSIONS = {'csv', 'xls', 'xlsx'}
-app.app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
-app.app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
 db = MongoEngine()
-
-
-# Create the application instance
 app.add_api('swagger.yml')
 app.app.config['MONGODB_SETTINGS'] = {
     'db': 'flask123',

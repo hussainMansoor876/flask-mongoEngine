@@ -5,8 +5,6 @@ from datetime import datetime
 # 3rd party modules
 from flask import make_response, abort, Flask, request
 import os
-# from models import datasets_model
-# from api.models import Dataset_mongo
 from flask_mongoengine import MongoEngine
 from werkzeug.utils import secure_filename
 
@@ -26,11 +24,6 @@ import pandas as pd
 
 db = MongoEngine()
 db.init_app(app)
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 class Dataset_mongo(db.Document):
