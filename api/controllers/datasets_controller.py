@@ -3,10 +3,12 @@ import connexion
 from datetime import datetime
 
 # 3rd party modules
-from flask import make_response, abort, Flask
+from flask import make_response, abort, Flask, request
+import os
 # from models import datasets_model
 # from api.models import Dataset_mongo
 from flask_mongoengine import MongoEngine
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -15,9 +17,18 @@ app.config['MONGODB_SETTINGS'] = {
     'host': 'mongodb://mansoor:mansoor11@ds019829.mlab.com:19829/flask123',
     'retryWrites': False
 }
-# from models import db
+
+UPLOAD_FOLDER = './storage/'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 db = MongoEngine()
 db.init_app(app)
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 class Dataset_mongo(db.Document):
@@ -37,16 +48,13 @@ def post_dataset_with_file(source_file):  # noqa: E501
 
     :rtype: DatasetIdPostResponse
     """
-    print(source_file.filename)
-    # return {
-    #     "dataset_id": "mansoor",
-    # }
+    file = request.files['source_file']
+    print(file)
+    print(os.listdir('.'))
+    filename = secure_filename(source_file.filename)
+    source_file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
     return {
-        "dataset_id": "40655045bfy",
-        "dataset_filename": "KPIs Sheet.xlsx",
-        "dataset_rows": 1500,
-        "dataset_columns": 8,
-        "dataset_headers": ['Revenue', 'Sign-Ups', 'Active Users', 'Mansoor']
+        "dataset_id": "mansoor",
     }
 
 
@@ -69,32 +77,3 @@ def get_dataset_by_id(requested_dataset_id):  # noqa: E501
     #     "dataset_columns": 8,
     #     "dataset_headers": ['Revenue', 'Sign-Ups', 'Active Users', 'Mansoor']
     # }
-
-def create(person):
-    """
-    This function creates a new person in the people structure
-    based on the passed in person data
-
-    :param person:  person to create in people structure
-    :return:        201 on success, 406 on person exists
-    """
-    lname = person.get("lname", None)
-    fname = person.get("fname", None)
-
-    # Does the person exist already?
-    if lname not in PEOPLE and lname is not None:
-        PEOPLE[lname] = {
-            "lname": lname,
-            "fname": fname,
-            "timestamp": get_timestamp(),
-        }
-        return make_response(
-            "{lname} successfully created".format(lname=lname), 201
-        )
-
-    # Otherwise, they exist, that's an error
-    else:
-        abort(
-            406,
-            "Person with last name {lname} already exists".format(lname=lname),
-        )

@@ -72,21 +72,6 @@ paths:
               dataset_id:
                 type: string
                 example: '40655045bfy'
-              dataset_filename:
-                type: string
-                example: 'KPIs Sheet.xlsx'
-              dataset_rows:
-                type: integer
-                example: 1500
-              dataset_columns:
-                type: integer
-                example: 8
-              dataset_headers:
-                type: array
-                items:
-                  type: string
-                  example: ['Revenue','Sign-Ups','Active Users']
-
     # post:
     #   tags:
     #     - Datasets

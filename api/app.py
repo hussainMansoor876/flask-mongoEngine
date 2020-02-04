@@ -12,11 +12,15 @@
 
 from flask import Flask, jsonify
 import connexion
+from connexion.resolver import RestyResolver
+from flask_mongoengine import MongoEngine
 import datetime
 # from models.datasets_model import Dataset_mongo
 app = connexion.App(__name__, specification_dir='openapi/')
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = 'storage/'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app.app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
+db = MongoEngine()
 
 
 # Create the application instance
