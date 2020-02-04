@@ -19,8 +19,9 @@ app.config['MONGODB_SETTINGS'] = {
 }
 
 UPLOAD_FOLDER = './storage/'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'csv', 'xls', 'xlsx'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
 
 db = MongoEngine()
 db.init_app(app)
@@ -48,14 +49,15 @@ def post_dataset_with_file(source_file):  # noqa: E501
 
     :rtype: DatasetIdPostResponse
     """
-    file = request.files['source_file']
-    print(file)
-    print(os.listdir('.'))
     filename = secure_filename(source_file.filename)
-    source_file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+    if allowed_file(filename):
+        source_file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+        return {
+            "dataset_id": "mansoor",
+        }
     return {
-        "dataset_id": "mansoor",
-    }
+            "dataset_id": "Not found",
+        }
 
 
 def get_dataset_by_id(requested_dataset_id):  # noqa: E501
