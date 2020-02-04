@@ -52,6 +52,10 @@ def post_dataset_with_file(source_file):  # noqa: E501
     """
     filename = secure_filename(source_file.filename)
     filepath = os.path.join(app.config['UPLOAD_FOLDER'],filename)
+    if(os.path.exists(filepath)):
+        filename = f"{str(int(datetime.timestamp(datetime.now())))}_{filename}"
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'],filename)
+
     if filename.lower().endswith(('.xls', '.xlsx')): # checking if file's extension is .xls or .xlsx
         source_file.save(filepath)
         df = pd.read_excel(filepath, sheet_name=0, header=0) # reading the Excel input file into a pandas dataframe
@@ -68,7 +72,6 @@ def post_dataset_with_file(source_file):  # noqa: E501
 
     result = Dataset_mongo(dataset_filename=filename, dataset_rows=rows, dataset_columns=columns, dataset_headers=headers).save()
 
-    print('rows', result.id)
     return {
             "dataset_id": str(result.id),
         }
@@ -86,10 +89,3 @@ def get_dataset_by_id(requested_dataset_id):  # noqa: E501
     """
     result = Dataset_mongo.objects(id=requested_dataset_id)[0]
     return result
-    # return {
-    #     "dataset_id": "40655045bfy",
-    #     "dataset_filename": "KPIs Sheet.xlsx",
-    #     "dataset_rows": 1500,
-    #     "dataset_columns": 8,
-    #     "dataset_headers": ['Revenue', 'Sign-Ups', 'Active Users', 'Mansoor']
-    # }
